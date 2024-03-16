@@ -1,0 +1,287 @@
+#include <iostream>
+#include<stdlib.h>
+
+using namespace std;
+
+struct BookList
+{
+    string title;
+    string author;
+    int ISBN;
+
+    BookList* nxt;
+    BookList* prev;
+};
+
+BookList* head;
+BookList* tail;
+BookList* n;
+BookList* temp;
+
+void title()
+{
+    system("color a");
+    cout << "===============================================================================" << endl;
+    cout << "================ ADAMA SCIENCE AND TECHNOLOGY UNIVERSITY ======================" << endl;
+    cout << "================= DATA STRUCTURES AND ALGORITHMS PROJECT ======================" << endl;
+    cout << "-------------------------------------------------------------------------------" << endl;
+    cout << "======================== LIBRARY MANAGEMENT SYSTEM ============================" << endl;
+    cout << "===============================================================================" << endl << endl;
+}
+
+void InsertLast();
+void InsertFirst();
+void PrintBackward(BookList* tail);
+void PrintForward(BookList* head);
+void SortByISBN();
+void SearchBook();
+
+
+int main()
+{
+    title();
+
+    int c;
+
+    CHOICE:
+    system("color a");
+
+    cout << "Choose an action: " << endl;
+    cout << "\t 1: Add book at the beginning of the list" << endl;
+    cout << "\t 2: Add book at the end of the list" << endl;
+    cout << "\t 3: Print book list (start to end)" << endl;
+    cout << "\t 4: Print book list (end to start)" << endl;
+    cout << "\t 5: Sort by ISBN" << endl;
+    cout << "\t 6: Search books" << endl;
+    cout << "\t 7: EXIT" << endl;
+    cout<<"\t choose:-> ";
+
+    cin >> c;
+
+
+    cout << "--------------------------------------------------------------------" << endl;
+
+    switch(c)
+    {
+    case 1:
+        InsertFirst();
+        goto CHOICE;
+        break;
+    case 2:
+        InsertLast();
+        goto CHOICE;
+        break;
+    case 3:
+        PrintForward(head);
+        goto CHOICE;
+        break;
+    case 4:
+        PrintBackward(tail);
+        goto CHOICE;
+        break;
+    case 5:
+        SortByISBN();
+        goto CHOICE;
+        break;
+    case 6:
+        SearchBook();
+        goto CHOICE;
+        break;
+    case 7:
+        break;
+    }
+
+    return 0;
+}
+
+
+void InsertFirst()
+{
+    n = new BookList;
+
+    cout << "Title: ";
+    cin >> n->title;
+
+    cout << "Author: ";
+    cin >> n->author;
+
+    cout << "ISBN: ";
+    cin >> n->ISBN;
+
+
+    if(head == NULL)
+    {
+        tail = n;
+    }
+
+    else
+    {
+        temp = new BookList;
+        temp = head;
+        temp->prev = n;
+    }
+
+    n->nxt = head;
+    n->prev = NULL;
+    head = n;
+
+    cout << "--------------------------------------------------------------------" << endl;
+    cout << endl;
+}
+
+
+void InsertLast()
+{
+    n = new BookList;
+    cout << "Title: ";
+    cin >> n->title;
+
+    cout << "Author: ";
+    cin >> n->author;
+
+    cout << "ISBN: ";
+    cin >> n->ISBN;
+
+
+    if(tail == NULL)
+    {
+        head = n;
+    }
+
+    else
+    {
+        temp = new BookList;
+        temp = tail;
+        temp->nxt = n;
+    }
+
+    n->prev = temp;
+    n->nxt = NULL;
+    tail = n;
+
+    cout << "--------------------------------------------------------------------" << endl;
+
+    cout << endl;
+}
+
+
+void PrintForward(BookList* temp)  //choose 3
+{
+    if (head == NULL)
+    {
+        cout << "There are no books in this library!" << endl;
+    }
+
+    while(temp != NULL)
+    {
+        cout << "Title: " << temp->title << "\t" << "Author: " << temp->author << "\t" << "ISBN: " << temp->ISBN << endl;
+        temp = temp->nxt;
+    }
+    cout << "--------------------------------------------------------------------" << endl;
+    cout<<endl;
+}
+
+
+void PrintBackward(BookList* temp)  //choose 4
+{
+    if (head == NULL)
+    {
+        cout << "There are no books in this library!" << endl;
+    }
+
+    while(temp != NULL)
+    {
+        cout << "Title: " << temp->title << "\t" << "Author: " << temp->author << "\t" << "ISBN: " << temp->ISBN << endl;
+        temp = temp->prev;
+    }
+    cout << "--------------------------------------------------------------------" << endl;
+    cout<<endl;
+}
+
+void SortByISBN()
+{
+    if (head == NULL)
+    {
+        cout << "There are no books in this library!" << endl;
+    }
+
+    else
+    {
+        BookList *i = head, *j = NULL, *k, *l, *m;
+
+         while(i != NULL)
+         {
+             j = i->nxt;
+             m = i->nxt;
+
+             while(j != NULL)
+             {
+                 l = j->nxt;
+                 if(i->ISBN > j->ISBN)
+                 {
+                     k->nxt = j->nxt;
+                     k->prev = j->prev;
+
+                     j->nxt = i->nxt;
+                     j->prev = i->prev;
+
+                     i->nxt = k->nxt;
+                     i->prev = k->prev;
+                 }
+                 j = l;
+             }
+            i = m;
+         }
+         cout << "Books Sorted successfully!" << endl;
+          while(head != NULL)
+    {
+        cout << "Title: " << temp->title << "\t" << "Author: " << temp->author << "\t" << "ISBN: " << temp->ISBN << endl;
+        temp = temp->nxt;
+    }
+    }
+    cout << "--------------------------------------------------------------------" << endl;
+}
+
+
+void SearchBook()
+{
+    int found = 0;
+    string t;
+
+    cout << "What book are you searching for? (title)" << "\t";
+    cin >> t;
+
+    BookList *sr = head;
+
+    while(sr != NULL)
+    {
+        if (sr->title == t)
+        {
+            found++;
+        }
+        sr = sr->nxt;;
+    }
+
+    if (found == 0)
+    {
+        cout << 'There is no book titled "' << t << '"  in this library!' << endl;
+    }
+
+    else
+    {
+        cout << "The book " << t << " is found " << found << " times in our library!" << endl;
+        sr = head;
+
+        while(sr != NULL)
+        {
+            if (sr->title == t)
+            {
+                cout << "Title: " << sr->title << "\t" << "Author: " << sr->author << "\t" << "ISBN: " << sr->ISBN << endl;;
+            }
+            sr = sr->nxt;;
+        }
+
+    }
+
+    cout << "--------------------------------------------------------------------" << endl;
+}
